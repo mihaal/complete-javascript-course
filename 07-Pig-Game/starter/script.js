@@ -38,22 +38,40 @@ btnRoll.addEventListener('click', function () {
     document.getElementById(`current--${activePlayer}`).textContent =
       currentScore;
   } else {
-    currentScore = 0;
-    document.getElementById(`current--${activePlayer}`).textContent =
-      currentScore;
-    player0El.classList.toggle('player--active');
-    player1El.classList.toggle('player--active');
+    switchPlayer();
+  }
+});
+
+btnHold.addEventListener('click', function () {
+  // 1. add current score to active player
+  scores[activePlayer] += currentScore;
+
+  document.getElementById(`score--${activePlayer}`).textContent =
+    scores[activePlayer];
+
+  // 2. check if score >= 100
+  if (scores[activePlayer] >= 100) {
+    // Yes: finish game
+    document
+      .querySelector(`.player--${activePlayer}`)
+      .classList.add('player--winner');
+  } else {
+    // No: switch to other player
+    switchPlayer();
   }
 });
 
 // Wenn nicht mit toggle dann so Player switchen
 
-// const switchPlayer = () => {
-//   document
-//     .querySelector(`.player--${activePlayer}`)
-//     .classList.remove('player--active');
-//   activePlayer = activePlayer === 0 ? 1 : 0;
-//   document
-//     .querySelector(`.player--${activePlayer}`)
-//     .classList.add('player--active');
-// };
+const switchPlayer = () => {
+  currentScore = 0;
+  document.getElementById(`current--${activePlayer}`).textContent =
+    currentScore;
+  document
+    .querySelector(`.player--${activePlayer}`)
+    .classList.remove('player--active');
+  activePlayer = activePlayer === 0 ? 1 : 0;
+  document
+    .querySelector(`.player--${activePlayer}`)
+    .classList.add('player--active');
+};
